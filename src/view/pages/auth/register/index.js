@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Input, Button, Divider } from 'antd';
+import { Typography, Input, Button, Divider, Form, notification } from 'antd';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../../services/firebase/firebase';
 import './index.css';
@@ -10,6 +10,7 @@ class Register extends React.Component {
     constructor() {
         super();
         this.state = {
+            loading: false,
             firstName: '',
             lastName: '',
             headline: '',
@@ -20,75 +21,91 @@ class Register extends React.Component {
         this.hendleRegister = this.hendleRegister.bind(this);
     }
 
-    hendleChangeInput = e => {
-        const { name, value } = e.target;
-        this.setState({
-            [name]: value
-        });
+    hendleChangeInput = value => {
+        this.setState(value);
     }
 
-    hendleRegister() {
-        const { email, password } = this.state;
-        createUserWithEmailAndPassword(auth, email, password);
+    async hendleRegister() {
+        const { email, password, firstName, lastName } = this.state;
+        this.setState({
+            loading: true
+        });
+
+        try{
+            const response = await createUserWithEmailAndPassword(auth, email, password);
+            console.log(response);
+            notification.success({
+                message: 'Success Registration',
+                description: `Welcome dear ${firstName} ${lastName}`
+            })
+        } catch(error) {
+            notification.error({
+                message: 'Wrong Registration',
+                description: 'Ooooops:('
+            })
+        } finally {
+            this.setState({
+                loading: false
+            });
+        }
     }
 
     render () {
+        
         return (
             <div className="auth_register_container">
                 <Title level={2}>
                     Register
                 </Title>
 
-                <div>
-                    <Input
-                        type="text"
-                        name="firstName"
-                        placeholder="First Name"
-                        onChange={this.hendleChangeInput}
-                    />
-                </div>
+                <Form layout='vertical' onValuesChange={this.hendleChangeInput}>
+                    <Form.Item label="First Name" name="firstName">
+                        <Input 
+                            type="text"
+                            placeholder="First Name"
+                        />
+                    </Form.Item>
 
-                <div>
-                    <Input
-                        type="text"
-                        name="lastName"
-                        placeholder="Last Name"
-                        onChange={this.hendleChangeInput}
-                    />
-                </div>
-                    
-                <div>
-                    <Input
-                        type="text"
-                        name="headline"
-                        placeholder="HeadLine"
-                        onChange={this.hendleChangeInput}
-                    />
-                </div>
+                    <Form.Item label="Last Name" name="lastName">
+                        <Input
+                            type="text"
+                            placeholder="Last Name"
+                        />
+                    </Form.Item>
+                        
+                    <Form.Item label="Headline" name="headline">
+                        <Input
+                            type="text"
+                            placeholder="Headline"
+                        />
+                    </Form.Item>
 
-                <div>
-                    <Input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        onChange={this.hendleChangeInput}
-                    />
-                </div>
+                    <Form.Item label="Eamil" name="email">
+                        <Input
+                            type="email"
+                            placeholder="Email"
+                        />
+                    </Form.Item>
 
-                <div>
-                    <Input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        onChange={this.hendleChangeInput}
-                    />
-                </div>
+                    <Form.Item label="Password" name="password">
+                        <Input
+                            type="password"
+                            placeholder="Password"
+                            
+                        />
+                    </Form.Item>
 
-                <Divider/>
+                    <Divider/>
 
-                <Button type="primary" onClick={this.hendleRegister}>
-                    Register
-                </Button>
+                    <Button 
+                        type="primary" 
+                        onClick={this.hendleRegister}
+                        loading={this.state.loading}
+                    >
+                        Register
+                    </Button>
+                </Form>
+
             </div>
         )
     }
