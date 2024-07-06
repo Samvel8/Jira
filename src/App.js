@@ -1,19 +1,11 @@
 import { Image, Button, Rate } from 'antd';
 import './App.css';
+import Register from './view/pages/auth/register';
 
 function App() {
   return (
     <div className="App">
-      <Image 
-        width={200}
-        src='https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-      />
-
-      <Button>
-        Submit
-      </Button>
-      
-      <Rate/>
+      <Register />
     </div>
   );
 }
