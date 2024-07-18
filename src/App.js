@@ -1,26 +1,57 @@
 import React from 'react';
 import Header from './view/components/global/header';
-import Auth from './view/pages/auth';
+import Login from './view/pages/auth/login';
+import Register from './view/pages/auth/register';
+import MainLayout from './view/layout/MainLayout';
+import Cabinet from './view/pages/cabinet/index';
+import CabinetLayout from './view/layout/CabinetLayout';
 import { db, auth, doc, getDoc, onAuthStateChanged } from './services/firebase/firebase';
+import LoadingWrapper from './view/components/shared/LoadingWrapper';
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import './App.css';
-import { isCursorAtEnd } from '@testing-library/user-event/dist/utils';
+
+
+const route = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path='/' element={<MainLayout />}>
+        <Route path='login' element={<Login />} />
+        <Route path='register' element={<Register />} />
+
+        <Route path='/cabinet' element={<CabinetLayout />}>
+          <Route path='/cabinet' element={<Cabinet />} />
+        </Route>
+    </Route>
+  )
+)
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
+      loading: false,
       isAuth: false,
-      firstName: '',
-      lastName: '',
-      headline: '',
+      userProfileInfo: {
+        firstName: '',
+        lastName: '',
+        headline: '',
+        email: ''
+      },
+
     }
 
   }
 
   componentDidMount() {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
+    this.setState({
+      loading: true
+    });
 
+    onAuthStateChanged(auth, (user) => {
+      this.setState({
+        loading: false
+      });
+
+      if (user) {
         this.setState({
           isAuth: true
         })
@@ -31,7 +62,7 @@ class App extends React.Component {
         getDoc(ref).then((userData) => {
           if (userData.exists()) {
             this.setState({
-              ...userData.data()
+              userProfileInfo: userData.data()
             })
           }
         })
@@ -43,12 +74,12 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.state, 'yes')
+    const { userProfileInfo, loading, isAuth } = this.state;
+    
     return (
-      <div className="App">
-        <Header />
-        <Auth />
-      </div>
+      <LoadingWrapper loading={loading} fullScreen>
+        <RouterProvider  router={route} />
+      </LoadingWrapper>
     )
   }
 }
