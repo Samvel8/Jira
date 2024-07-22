@@ -1,24 +1,25 @@
 import React from 'react';
-import Header from './view/components/global/header';
-import Login from './view/pages/auth/login';
-import Register from './view/pages/auth/register';
-import MainLayout from './view/layout/MainLayout';
-import Cabinet from './view/pages/cabinet/index';
-import CabinetLayout from './view/layout/CabinetLayout';
+import { MainLayout } from './view/layout';
+import { Login, Register } from './view/pages/auth';
+import CabinetLayout from './view/layout/cabinetLayout';
 import { db, auth, doc, getDoc, onAuthStateChanged } from './services/firebase/firebase';
 import LoadingWrapper from './view/components/shared/LoadingWrapper';
-import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+import { 
+  Route, 
+  RouterProvider, 
+  createBrowserRouter, 
+  createRoutesFromElements } from 'react-router-dom';
 import './App.css';
 
 
 const route = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<MainLayout />}>
-        <Route path='login' element={<Login />} />
-        <Route path='register' element={<Register />} />
+    <Route path="/" element={<MainLayout />}>
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
 
-        <Route path='/cabinet' element={<CabinetLayout />}>
-          <Route path='/cabinet' element={<Cabinet />} />
+        <Route path="cabinet" element={<CabinetLayout />}>
+          
         </Route>
     </Route>
   )

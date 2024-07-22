@@ -1,10 +1,12 @@
 import React from 'react';
-import { Typography, Input, Button, Divider, Form, notification } from 'antd';
+import { Typography, Input, Button, Divider, Form, notification, Flex } from 'antd';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, setDoc, doc, db } from '../../../../services/firebase/firebase';
-import './index.css';
+import AuthWrapper from '../../../components/shared/AuthWrapper';
+import registerCoverImg from '../../../../core/images/registerCover.png';
+import { Link } from 'react-router-dom';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 class Register extends React.Component {
     constructor() {
@@ -58,9 +60,8 @@ class Register extends React.Component {
     }
 
     render () {
-        
         return (
-            <div className="auth_container">
+            <AuthWrapper coverImg={registerCoverImg}>
                 <Title level={2}>
                     Register
                 </Title>
@@ -95,25 +96,29 @@ class Register extends React.Component {
                     </Form.Item>
 
                     <Form.Item label="Password" name="password">
-                        <Input
-                            type="password"
+                        <Input.Password
                             placeholder="Password"
-                            
                         />
                     </Form.Item>
 
                     <Divider/>
 
-                    <Button 
-                        type="primary" 
-                        onClick={this.hendleRegister}
-                        loading={this.state.loading}
-                    >
-                        Register
-                    </Button>
+                    <Flex justify="space-between" align="flex-end">
+                        <Link to="/login">
+                            Sign In
+                        </Link>
+                        
+                        <Button 
+                            type="primary" 
+                            onClick={this.hendleRegister}
+                            loading={this.state.loading}
+                        >
+                            Register
+                        </Button>
+                    </Flex>
                 </Form>
 
-            </div>
+            </AuthWrapper>
         )
     }
 

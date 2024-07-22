@@ -1,26 +1,30 @@
 import { Layout, Button, Typography, Space } from 'antd';
 import UserProfile from '../../shared/UserProfile';
+import { Link } from 'react-router-dom';
 import './index.css';
+
 
 const Header = ({ isAuth, userProfileInfo }) => { 
    
     return (
         <Layout.Header className="main_header">
-            <Typography.Title level={3}>
-                Jira
-            </Typography.Title>
+            <Link to="/">
+                <Typography.Title level={3}>
+                    Jira
+                </Typography.Title>
+            </Link>
 
             <Space>
                 {
-                    !isAuth && (
-                        <Button>
-                            Login
-                        </Button>
+                    isAuth ? (
+                        <UserProfile userProfileInfo={userProfileInfo} />
+                    ) : (
+                        <Link to="/login">
+                            <Button>
+                                Login
+                            </Button>
+                        </Link>
                     )
-                }
-
-                {
-                    isAuth && <UserProfile userProfileInfo={userProfileInfo} />
                 }
             </Space>
         </Layout.Header>
