@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import Header from '../../components/global/header';
+import Header from '../../components/global/header'
 import './index.css';
 
 const MainLayout = () => {
