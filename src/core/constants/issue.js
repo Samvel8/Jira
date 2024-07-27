@@ -1,4 +1,4 @@
-export const issueTypes = [
+const issueTypes = [
     {
         value: 'bug',
         label: 'Bug'
@@ -12,3 +12,30 @@ export const issueTypes = [
         label: 'Story'
     },
 ];
+
+const priority = [
+    {
+        value: 'highest',
+        label: 'Highest'
+    },
+    {
+        value: 'high',
+        label: 'High'
+    },
+    {
+        value: 'medium',
+        label: 'Medium'
+    },
+    {
+        value: 'low',
+        label: 'Low'
+    },
+    {
+        value: 'lowest',
+        label: 'Lowest'
+    },
+];
+
+export {
+    issueTypes, priority
+}
