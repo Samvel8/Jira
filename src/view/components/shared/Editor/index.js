@@ -1,9 +1,16 @@
 import { Editor as EditorTinymce } from '@tinymce/tinymce-react';
 
-const Editor = () => {
+const Editor = ({ value, onChange }) => {
+
+    const handleChange = (editorValue) => {
+        onChange(editorValue)
+    };
+
     return (
         <EditorTinymce
+            onEditorChange={handleChange}
             apiKey='j13ks5nfta7dgljey2ui0nyxdmna6iv6uk9jea5zfntp26vw'
+            value={value}
             init={{
             height: 300,
             menubar: false,
