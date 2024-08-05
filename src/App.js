@@ -11,7 +11,6 @@ import {
   createRoutesFromElements } from 'react-router-dom';
 import './App.css';
 
-
 const route = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<MainLayout />}>
@@ -23,7 +22,7 @@ const route = createBrowserRouter(
         </Route>
     </Route>
   )
-)
+);
 
 class App extends React.Component {
   constructor() {
@@ -84,6 +83,5 @@ class App extends React.Component {
     )
   }
 }
-
 
 export default App;
