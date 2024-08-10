@@ -12,8 +12,6 @@ import {
   createRoutesFromElements,
   redirect } from 'react-router-dom';
 import './App.css';
-import { set } from 'firebase/database';
-import { Button } from 'antd';
 
 const route = createBrowserRouter(
   createRoutesFromElements(
