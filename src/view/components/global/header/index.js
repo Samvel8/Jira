@@ -1,11 +1,14 @@
+import { useContext } from 'react';
 import { Layout, Button, Typography, Space } from 'antd';
 import UserProfile from '../../shared/UserProfile';
+import { AuthContext } from '../../../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import './index.css';
 
 
-const Header = ({ isAuth, userProfileInfo }) => { 
-   
+const Header = () => { 
+    const { isAuth, setIsAuth, userProfileInfo } = useContext(AuthContext);
+
     return (
         <Layout.Header className="main_header">
             <Link to="/">
@@ -17,7 +20,7 @@ const Header = ({ isAuth, userProfileInfo }) => {
             <Space>
                 {
                     isAuth ? (
-                        <UserProfile userProfileInfo={userProfileInfo} />
+                        <UserProfile setIsAuth={setIsAuth} userProfileInfo={userProfileInfo} />
                     ) : (
                         <Link to="/login">
                             <Button>
