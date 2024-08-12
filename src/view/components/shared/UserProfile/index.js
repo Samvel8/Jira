@@ -1,8 +1,8 @@
-import { Avatar, Dropdown, Flex, Typography, Divider} from 'antd';
+import { Avatar, Dropdown, Typography, Flex, Divider } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { getfirstLetters } from '../../../../core/helpers/getFirstLetters';
-import { auth } from '../../../../services/firebase/firebase';
 import { signOut } from 'firebase/auth';
+import { auth } from '../../../../services/firebase/firebase';
+import { getFirstLetters } from '../../../../core/helpers/getFirstLetters';
 
 const { Text } = Typography;
 
@@ -14,7 +14,7 @@ const UserProfile = ({ userProfileInfo, setIsAuth }) => {
             await signOut(auth);
             setIsAuth(false);
         } catch(e) {
-            console.log(e, 'errror')
+            console.log(e, 'error')
         }
     }
 
@@ -31,12 +31,12 @@ const UserProfile = ({ userProfileInfo, setIsAuth }) => {
                     <Text>
                         {firstName} {lastName}
                     </Text>
-                    
+    
                     <Text underline>
                         {email}
                     </Text>
 
-                    <Text type='secondary'>
+                    <Text type="secondary">
                         {headline}
                     </Text>
     
@@ -56,13 +56,13 @@ const UserProfile = ({ userProfileInfo, setIsAuth }) => {
     ]
 
     return (
-        <Dropdown
+        <Dropdown 
             menu={{
                 items
             }}
         >
             <Avatar size="large">
-                {getfirstLetters(`${firstName} ${lastName}`)}
+                {getFirstLetters(`${firstName} ${lastName}`)}
             </Avatar>
         </Dropdown>
     )

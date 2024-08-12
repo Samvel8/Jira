@@ -8,6 +8,7 @@ const AuthWrapper = ({ coverImg, children }) => {
                 style={{backgroundImage: `url(${coverImg})`}}
             />
 
+
             <div className="form_container">
                 {children}
             </div>

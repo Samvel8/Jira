@@ -1,7 +1,7 @@
-// import { auth } from "./firebase";
+// import { auth } from './firebase';
 
 // import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-// const hendleCreateUserWithEmailPassword = async () => {
+// const handleCreateUserWithEmailPassword = async (email, password) => {
 //     await createUserWithEmailAndPassword(auth, email, password)
 // }
