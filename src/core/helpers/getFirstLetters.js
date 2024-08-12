@@ -1,14 +1,6 @@
-export const getfirstLetters = (fullName) => {
-    const splitNames = fullName.trim().split(' ');
-
-    if (splitNames.length >= 2) {
-        const firstLetter = splitNames[0][0].toUpperCase();
-
-        const lastLetter = splitNames[1][0].toUpperCase();
-
-        return `${firstLetter} ${lastLetter}`
-    }
-
+export const getFirstLetters = (fullName) => {
+    const splitNames = fullName.trim().split(' '); 
+    return splitNames.map((name) => name[0]?.toUpperCase()).join(' '); 
 };
 
-getfirstLetters('john', 'smith');
+

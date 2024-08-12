@@ -23,7 +23,7 @@ const items = [
 
 const Sidebar = () => {
     const [collapsed, setCollapsed] = useState(true); 
-
+    
     const handleChangeCollapsed = () => {
         setCollapsed(!collapsed);
     }

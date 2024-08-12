@@ -5,8 +5,7 @@ import { AuthContext } from '../../../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import './index.css';
 
-
-const Header = () => { 
+const MainHeader = () => { 
     const { isAuth, setIsAuth, userProfileInfo } = useContext(AuthContext);
 
     return (
@@ -16,7 +15,7 @@ const Header = () => {
                     Jira
                 </Typography.Title>
             </Link>
-
+           
             <Space>
                 {
                     isAuth ? (
@@ -34,4 +33,4 @@ const Header = () => {
     )
 };
 
-export default Header;
+export default MainHeader;

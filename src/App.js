@@ -1,27 +1,26 @@
 import { useState, useEffect } from 'react';
-import { MainLayout } from './view/layout';
+import { MainLayout, CabinetLayout } from './view/layouts';
 import { Login, Register } from './view/pages/auth';
-import CabinetLayout from './view/layout/cabinetLayout';
+import LoadingWrapper from './view/components/shared/LoadingWrapper';
 import { db, auth, doc, getDoc, onAuthStateChanged } from './services/firebase/firebase';
 import { AuthContextProvider } from './context/AuthContext';
-import LoadingWrapper from './view/components/shared/LoadingWrapper';
-import { 
+import {  
   Route, 
-  RouterProvider, 
-  createBrowserRouter, 
+  RouterProvider,
+  createHashRouter, 
   createRoutesFromElements,
-  redirect } from 'react-router-dom';
+} from 'react-router-dom';
 import './App.css';
 
-const route = createBrowserRouter(
+const route = createHashRouter(
   createRoutesFromElements(
     <Route path="/" element={<MainLayout />}>
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
+        <Route path="login" element={<Login />}/>
+        <Route path="register" element={<Register />}/>
 
         <Route path="cabinet" element={<CabinetLayout />}>
-          
-        </Route>
+
+        </Route>  
     </Route>
   )
 );
@@ -38,8 +37,8 @@ const App = () => {
 
   useEffect(() => {
     setLoading(true);
-
-    onAuthStateChanged(auth, (user) => {
+    
+    onAuthStateChanged(auth, (user) => { 
       setLoading(false)
 
       if (user) {
@@ -49,22 +48,25 @@ const App = () => {
 
           getDoc(ref).then((userData) => {
             if (userData.exists()) {
-              setUserProfileInfo(userData.data())
-          }
-        })
+              setUserProfileInfo(userData.data()) 
+            }
+          })
       } else {
-        redirect('/login');
+
       }
-      
     })
   }, [])
 
   return (
-    <LoadingWrapper loading={loading} fullScreen>
-      <AuthContextProvider value={{ isAuth, userProfileInfo, setIsAuth }}>
-        <RouterProvider router={route} />
-      </AuthContextProvider>
-    </LoadingWrapper>
+    <>
+   
+      <LoadingWrapper loading={loading} fullScreen>
+        <AuthContextProvider value={{ isAuth, userProfileInfo, setIsAuth }}>
+          <RouterProvider router={route}/>
+        </AuthContextProvider>
+      </LoadingWrapper>
+    </>
+  
   )
 };
 

@@ -5,6 +5,7 @@ import { auth, setDoc, doc, db } from '../../../../services/firebase/firebase';
 import AuthWrapper from '../../../components/shared/AuthWrapper';
 import registerCoverImg from '../../../../core/images/registerCover.png';
 import { Link, useNavigate } from 'react-router-dom';
+import './index.css';
 
 const { Title, Text } = Typography;
 
@@ -15,20 +16,20 @@ const Register = () => {
 
     const handleRegister = async (values) => {
         setLoading(true);
-        try{
+        try {
             const { email, password, ...restData } = values;
-            const response = await createUserWithEmailAndPassword(auth, email,password);
+            const response = await createUserWithEmailAndPassword(auth, email, password);
             const uid = response.user.uid;
             const createDoc = doc(db, 'registerUsers', uid);
             await setDoc(createDoc, {
                 email, ...restData
             });
             navigate('/login');
-        }catch(error){
+        }catch{
             notification.error({
                 message: 'Wrong Registration',
-                description: 'Ooooops:('
-            });
+                description: `Ooooops :(`
+            })
         }finally{
             setLoading(false);
         }
@@ -36,109 +37,110 @@ const Register = () => {
 
     return (
         <AuthWrapper coverImg={registerCoverImg}>
-        <Title level={2}>
-            Register
-        </Title>
+            <Title level={2}>
+                Register
+            </Title>
 
-        <Form form={form} onFinish={handleRegister} layout='vertical'>
-            <Form.Item 
-                name="firstName"
-                label="First Name"
-                rules={[
-                    {
-                        required: true,
-                        message: 'First Name is required!'
-                    }
-                ]}
-            >
-                <Input 
-                    type="text"
-                    placeholder="First Name"
-                />
-            </Form.Item>
-
-            <Form.Item
-                name="lastName"
-                label="Last Name"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Last Name is required!'
-                    }
-                ]}
+            <Form form={form} onFinish={handleRegister} layout="vertical">
+                <Form.Item
+                    name="firstName"
+                    label="First Name"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'First Name is required!'
+                        }
+                    ]}
                 >
-                <Input
-                    type="text"
-                    placeholder="Last Name"
-                />
-            </Form.Item>
+                    <Input 
+                        type="text"
+                        placeholder="First Name"
+                    />
+                </Form.Item>
+
+                <Form.Item 
+                    name="lastName"
+                    label="Last Name" 
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Last Name is required!'
+                        }
+                    ]}
+                >
+                    <Input 
+                        type="text"
+                        placeholder="Last Name"
+                    />
+                </Form.Item>
+
+                <Form.Item 
+                    name="headline"
+                    label="Headline" 
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Headline is required!'
+                        }
+                    ]}
+                >
+                    <Input 
+                        type="text"
+                        placeholder="Headline"
+                    />
+                </Form.Item>
+
+                <Form.Item 
+                    name="email"
+                    label="Email" 
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Email is required!'
+                        }
+                    ]}
+                >
+                    <Input 
+                        type="email"
+                        placeholder="Email"
+                    />
+                </Form.Item>
+
+                <Form.Item 
+                    name="password"
+                    label="Password" 
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Password is required!'
+                        }
+                    ]}
+                >
+                    <Input.Password
+                        placeholder="Password"
+                    />
+                </Form.Item>
+
+                <Divider />
+
+                <Flex justify="space-between" align="flex-end">
+                    <Text underline>
+                        <Link to="/login">
+                            Sign In
+                        </Link>
+                    </Text>
                 
-            <Form.Item 
-                name="headline"
-                label="Headline" 
-                rules={[
-                    {
-                        required: true,
-                        message: 'Headline is required!'
-                    }
-                ]}
-                >
-                <Input
-                    type="text"
-                    placeholder="Headline"
-                />
-            </Form.Item>
-
-            <Form.Item 
-                name="email"
-                label="Eamil"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Email is required!'
-                    }
-                ]}
-                >
-                <Input
-                    type="email"
-                    placeholder="Email"
-                />
-            </Form.Item>
-
-            <Form.Item 
-                name="password"
-                label="Password" 
-                rules={[
-                    {
-                        required: true,
-                        message: 'Password is required!'
-                    }
-                ]}
-            >
-                <Input.Password
-                    placeholder="Password"
-                />
-            </Form.Item>
-
-            <Divider/>
-
-            <Flex justify="space-between" align="flex-end">
-                <Link to="/login">
-                    Sign In
-                </Link>
-                
-                <Button 
-                    type="primary" 
-                    loading={loading}
-                    htmlType="submit"
-                >
-                    Register
-                </Button>
-            </Flex>
-        </Form>
-
-    </AuthWrapper>
+                    <Button
+                        type="primary" 
+                        loading={loading}
+                        htmlType="submit"
+                    >
+                        Register
+                    </Button>
+                </Flex>
+            </Form>
+        </AuthWrapper>
     )
-}
+};
 
 export default Register;

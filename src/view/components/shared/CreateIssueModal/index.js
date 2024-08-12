@@ -1,31 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Modal, Form, Input, Select } from 'antd';
-import { issueTypes, priority } from '../../../../core/constants/issue';
+import { useState } from 'react';
+import { Modal, Form, Input, Select, notification } from 'antd';
+import { issueTypes, priority, taskStatus } from '../../../../core/constants/issue';
 import Editor from '../Editor';
-import { doc, setDoc, db, getDocs, collection } from '../../../../services/firebase/firebase';
+import { doc, setDoc, db } from '../../../../services/firebase/firebase';
 
-
-
-const CreateIssueModal = ({ visible, setVisible }) => {
+const CreateIssueModal = ({ visible, setVisible, users }) => { //render
     const [ form ] = Form.useForm();
-    const [users, setUsers] = useState([]);
+   
     const [confirmLoading, setConfirmLoading] = useState(false);
- 
-
-    useEffect(() => {
-        const handleGetUsersData = async () => {
-            const queryData = await getDocs(collection(db, 'registerUsers'));
-            const result = queryData.docs.map((doc) => {
-                const { firstName, lastName } = doc.data();
-                return {label: `${firstName} ${lastName}`, value: doc.id}
-            });
-
-            setUsers(result);
-        }
-    
-        handleGetUsersData();
-    }, []);
-
 
     const handleCloseModal = () => {
         setVisible(false);
@@ -34,15 +16,26 @@ const CreateIssueModal = ({ visible, setVisible }) => {
 
     const handleCreateIssue = async (values) => {
         setConfirmLoading(true);
+
+        const taskDataModel = {
+            status: taskStatus.TODO,
+            ...values
+        }
+     
         try{
             const createDoc = doc(db, 'issue', `${Date.now()}`);
-            await setDoc(createDoc, values);
+            await setDoc(createDoc, taskDataModel);
 
-            
+            notification.success({
+                message: 'Your task has been created',
+            });
+
             setVisible(false);
             form.resetFields();
         }catch(error) {
-
+            notification.error({
+                message: 'Error ooops :(',
+            });
         }finally{
             setConfirmLoading(false);
         }
