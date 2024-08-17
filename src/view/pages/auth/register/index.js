@@ -5,6 +5,8 @@ import { auth, setDoc, doc, db } from '../../../../services/firebase/firebase';
 import AuthWrapper from '../../../components/shared/AuthWrapper';
 import registerCoverImg from '../../../../core/images/registerCover.png';
 import { Link, useNavigate } from 'react-router-dom';
+import { ROUTES_CONSTANTS } from '../../../../routes';
+
 import './index.css';
 
 const { Title, Text } = Typography;
@@ -24,7 +26,7 @@ const Register = () => {
             await setDoc(createDoc, {
                 email, ...restData
             });
-            navigate('/login');
+            navigate(ROUTES_CONSTANTS.LOGIN);
         }catch{
             notification.error({
                 message: 'Wrong Registration',
@@ -125,7 +127,7 @@ const Register = () => {
 
                 <Flex justify="space-between" align="flex-end">
                     <Text underline>
-                        <Link to="/login">
+                        <Link to={ROUTES_CONSTANTS.LOGIN}>
                             Sign In
                         </Link>
                     </Text>
@@ -144,3 +146,12 @@ const Register = () => {
 };
 
 export default Register;
+
+
+
+
+
+
+
+
+

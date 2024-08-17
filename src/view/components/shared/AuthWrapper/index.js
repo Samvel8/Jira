@@ -17,3 +17,4 @@ const AuthWrapper = ({ coverImg, children }) => {
 };
 
 export default AuthWrapper;
+
