@@ -3,6 +3,7 @@ import { Layout, Button, Typography, Space } from 'antd';
 import UserProfile from '../../shared/UserProfile';
 import { AuthContext } from '../../../../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { ROUTES_CONSTANTS } from '../../../../routes';
 import './index.css';
 
 const MainHeader = () => { 
@@ -21,7 +22,7 @@ const MainHeader = () => {
                     isAuth ? (
                         <UserProfile setIsAuth={setIsAuth} userProfileInfo={userProfileInfo} />
                     ) : (
-                        <Link to="/login">
+                        <Link to={ROUTES_CONSTANTS.LOGIN}>
                             <Button>
                                 Login
                             </Button>
