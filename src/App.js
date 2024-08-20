@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { MainLayout, CabinetLayout } from './view/layouts';
 import { Login, Register } from './view/pages/auth';
+import CabinetBoard from './view/pages/cabinetBoard';
 import LoadingWrapper from './view/components/shared/LoadingWrapper';
 import { db, auth, doc, getDoc, onAuthStateChanged } from './services/firebase/firebase';
 import { AuthContextProvider } from './context/AuthContext';
@@ -62,10 +63,14 @@ const App = () => {
                     path={ROUTES_CONSTANTS.REGISTER} 
                     element={!isAuth ? <Register /> : <Navigate to={ROUTES_CONSTANTS.REGISTER}/>}
                   />
+
+                  {/* ----- Cabinet Layout Route */}
                   <Route 
                     path={ROUTES_CONSTANTS.CABINET} 
                     element={isAuth ? <CabinetLayout /> : <Navigate to={ROUTES_CONSTANTS.LOGIN}/>} 
-                  />
+                  >
+                    <Route path={ROUTES_CONSTANTS.CABINET} element={<CabinetBoard />}/>
+                  </Route>
               </Route>
             )
           )

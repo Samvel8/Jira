@@ -2,12 +2,19 @@ import { useState } from 'react';
 import { Modal, Form, Input, Select, notification } from 'antd';
 import { issueTypes, priority, taskStatus } from '../../../../core/constants/issue';
 import Editor from '../Editor';
-import { doc, setDoc, db } from '../../../../services/firebase/firebase';
+import { doc, setDoc, db, updateDoc, arrayUnion} from '../../../../services/firebase/firebase';
 
 const CreateIssueModal = ({ visible, setVisible, users }) => { //render
     const [ form ] = Form.useForm();
    
     const [confirmLoading, setConfirmLoading] = useState(false);
+    
+    const handleUpdateAssignersTask = async (taskId, assigneesId) => {
+        const docRef = doc(db, 'registerUsers', assigneesId);
+        await updateDoc(docRef, {
+            task: arrayUnion[taskId]
+        })
+    };
 
     const handleCloseModal = () => {
         setVisible(false);
@@ -15,6 +22,7 @@ const CreateIssueModal = ({ visible, setVisible, users }) => { //render
     }
 
     const handleCreateIssue = async (values) => {
+        const taskId = `${Date.now()}`;
         setConfirmLoading(true);
 
         const taskDataModel = {
@@ -23,8 +31,9 @@ const CreateIssueModal = ({ visible, setVisible, users }) => { //render
         }
      
         try{
-            const createDoc = doc(db, 'issue', `${Date.now()}`);
+            const createDoc = doc(db, 'issue', taskId);
             await setDoc(createDoc, taskDataModel);
+            await handleUpdateAssignersTask(taskId, values.assignees)
 
             notification.success({
                 message: 'Your task has been created',

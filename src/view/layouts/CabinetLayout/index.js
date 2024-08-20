@@ -1,5 +1,6 @@
 import React from 'react';
 import { Sidebar, SubHeader } from '../../components/global';
+import { Outlet } from 'react-router-dom';
 import './index.css';
 
 const CabinetLayout = () => {
@@ -11,7 +12,7 @@ const CabinetLayout = () => {
         <SubHeader />
 
         <main className="main_container">
-
+          <Outlet />
         </main>
     </div>
   )
