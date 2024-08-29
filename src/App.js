@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { MainLayout, CabinetLayout } from './view/layouts';
 import { Login, Register } from './view/pages/auth';
+import CabinetBoard from './view/pages/cabinetBoard';
 import LoadingWrapper from './view/components/shared/LoadingWrapper';
-import { db, auth, doc, getDoc, onAuthStateChanged } from './services/firebase/firebase';
+import { db, auth, doc, getDoc, getDocs, collection, onAuthStateChanged } from './services/firebase/firebase';
 import { AuthContextProvider } from './context/AuthContext';
+import { taskStatusModel } from './view/pages/cabinetBoard/constats'; //todo
 import { ROUTES_CONSTANTS } from './routes';
 import {  
   Route, 
@@ -18,6 +20,9 @@ import './App.css';
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [columns, setColumns] = useState(taskStatusModel); //todo
+  const [issuesLoading, setIssueLoading] = useState(false); //todo
+
   const [userProfileInfo, setUserProfileInfo] = useState({
     firstName: '',
     lastName: '',
@@ -47,9 +52,25 @@ const App = () => {
     })
   }, [])
 
+  const handleGetIssues = async () => { //todo
+    setIssueLoading(true);
+    const updatedTaskStatusModal = taskStatusModel();
+    const queryData = await getDocs(collection(db, 'issue'));
+    queryData.docs.map(doc => {
+        const data = doc.data();
+        const { status } = data;
+
+        if (updatedTaskStatusModal[status]) {
+            updatedTaskStatusModal[status].items.push(data)
+        }
+    })
+    setIssueLoading(false);
+    setColumns({...updatedTaskStatusModal});
+};
+
   return (
     <LoadingWrapper loading={loading} fullScreen>
-      <AuthContextProvider value={{ isAuth, userProfileInfo, setIsAuth }}>
+      <AuthContextProvider value={{ isAuth, userProfileInfo, setIsAuth, columns, setColumns, handleGetIssues, issuesLoading }}>
         <RouterProvider router={
           createBrowserRouter(
             createRoutesFromElements(
@@ -62,10 +83,14 @@ const App = () => {
                     path={ROUTES_CONSTANTS.REGISTER} 
                     element={!isAuth ? <Register /> : <Navigate to={ROUTES_CONSTANTS.REGISTER}/>}
                   />
+
+                  {/* ----- Cabinet Layout Route */}
                   <Route 
                     path={ROUTES_CONSTANTS.CABINET} 
                     element={isAuth ? <CabinetLayout /> : <Navigate to={ROUTES_CONSTANTS.LOGIN}/>} 
-                  />
+                  >
+                    <Route path={ROUTES_CONSTANTS.CABINET} element={<CabinetBoard />}/>
+                  </Route>
               </Route>
             )
           )
