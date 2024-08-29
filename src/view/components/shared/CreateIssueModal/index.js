@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Modal, Form, Input, Select, notification } from 'antd';
 import { issueTypes, priority, taskStatus } from '../../../../core/constants/issue';
 import Editor from '../Editor';
 import { doc, setDoc, db, updateDoc, arrayUnion} from '../../../../services/firebase/firebase';
+import { AuthContext } from '../../../../context/AuthContext';
 
 const CreateIssueModal = ({ visible, setVisible, users }) => { //render
     const [ form ] = Form.useForm();
-   
+    const { handleGetIssues } = useContext(AuthContext);
     const [confirmLoading, setConfirmLoading] = useState(false);
     
     const handleUpdateAssignersTask = async (taskId, assigneesId) => {
@@ -34,7 +35,7 @@ const CreateIssueModal = ({ visible, setVisible, users }) => { //render
             const createDoc = doc(db, 'issue', taskId);
             await setDoc(createDoc, taskDataModel);
             await handleUpdateAssignersTask(taskId, values.assignees)
-
+            handleGetIssues();
             notification.success({
                 message: 'Your task has been created',
             });
@@ -60,6 +61,13 @@ const CreateIssueModal = ({ visible, setVisible, users }) => { //render
             confirmLoading={confirmLoading}
             onCancel={handleCloseModal}
             onOk={form.submit}
+            styles={{
+                body: {
+                    maxHeight: '600px',
+                    overflowY: 'auto',
+                    overflowX: 'hidden'
+                }
+            }}
         >
             <Form layout="vertical" form={form} onFinish={handleCreateIssue}>
                 <Form.Item
@@ -67,11 +75,22 @@ const CreateIssueModal = ({ visible, setVisible, users }) => { //render
                     label="Issue Type"
                     rules={[{required: true, message: 'Please Select Issue Type!'}]}
                 >
-                    <Select 
+                    <Select
                         showSearch
                         placeholder="Issue Type"
-                        options={issueTypes}
-                    />
+                    >
+                        {
+                            issueTypes.map((item) => {
+                                return (
+                                    <Select.Option value={item.value}>
+                                        {item.icon}
+                                        {' '}
+                                        {item.label}
+                                    </Select.Option>
+                                )
+                            })
+                        }
+                    </Select>
                 </Form.Item>
 
                 <Form.Item
@@ -121,11 +140,22 @@ const CreateIssueModal = ({ visible, setVisible, users }) => { //render
                     label="Priority"
                     rules={[{required: true, message: 'Please Select Priority!'}]}
                 >
-                    <Select 
+                    <Select
                         showSearch
                         placeholder="Priority"
-                        options={priority}
-                    />
+                    >
+                        {
+                            priority.map((item) => {
+                                return (
+                                    <Select.Option value={item.value}>
+                                        {item.icon}
+                                        {' '}
+                                        {item.label}
+                                    </Select.Option>
+                                )
+                            })
+                        }
+                    </Select>
                 </Form.Item>
             </Form>   
         </Modal>
