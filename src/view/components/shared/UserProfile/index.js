@@ -16,7 +16,7 @@ const UserProfile = ({ userProfileInfo, setIsAuth }) => {
             await signOut(auth);
             setIsAuth(false);
         } catch(e) {
-            console.log(e, 'error')
+            console.log(e, 'error');
         }
     }
 
