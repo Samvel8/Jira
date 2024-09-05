@@ -1,19 +1,19 @@
 import { useState, useContext } from 'react';
-import { Modal, Form, Input, Select, notification } from 'antd';
-import { issueTypes, priority, taskStatus } from '../../../../core/constants/issue';
-import Editor from '../Editor';
+import { Modal, Form, notification } from 'antd';
+import { taskStatus } from '../../../../core/constants/issue';
 import { doc, setDoc, db, updateDoc, arrayUnion} from '../../../../services/firebase/firebase';
 import { AuthContext } from '../../../../context/AuthContext';
+import IssueModalForm from '../IssueModalForm';
 
-const CreateIssueModal = ({ visible, setVisible, users }) => { //render
+const CreateIssueModal = ({ visible, setVisible }) => { //render
     const [ form ] = Form.useForm();
     const { handleGetIssues } = useContext(AuthContext);
     const [confirmLoading, setConfirmLoading] = useState(false);
-    
-    const handleUpdateAssignersTask = async (taskId, assigneesId) => {
-        const docRef = doc(db, 'registerUsers', assigneesId);
+
+    const handleUpdateAssigneesTask = async (taskId, assignerId) => {
+        const docRef = doc(db, 'registerUsers', assignerId);
         await updateDoc(docRef, {
-            task: arrayUnion[taskId]
+            task: arrayUnion(taskId)
         })
     };
 
@@ -27,14 +27,15 @@ const CreateIssueModal = ({ visible, setVisible, users }) => { //render
         setConfirmLoading(true);
 
         const taskDataModel = {
-            status: taskStatus.TODO,
+            key: taskId,
+            status: taskStatus.TODO.key,
             ...values
         }
      
         try{
             const createDoc = doc(db, 'issue', taskId);
             await setDoc(createDoc, taskDataModel);
-            await handleUpdateAssignersTask(taskId, values.assignees)
+            await handleUpdateAssigneesTask(taskId, values.assignees);
             handleGetIssues();
             notification.success({
                 message: 'Your task has been created',
@@ -69,95 +70,10 @@ const CreateIssueModal = ({ visible, setVisible, users }) => { //render
                 }
             }}
         >
-            <Form layout="vertical" form={form} onFinish={handleCreateIssue}>
-                <Form.Item
-                    name="issueType"
-                    label="Issue Type"
-                    rules={[{required: true, message: 'Please Select Issue Type!'}]}
-                >
-                    <Select
-                        showSearch
-                        placeholder="Issue Type"
-                    >
-                        {
-                            issueTypes.map((item) => {
-                                return (
-                                    <Select.Option value={item.value}>
-                                        {item.icon}
-                                        {' '}
-                                        {item.label}
-                                    </Select.Option>
-                                )
-                            })
-                        }
-                    </Select>
-                </Form.Item>
-
-                <Form.Item
-                    name="shortSummary"
-                    label="Short Summary"
-                    rules={[{required: true, message: 'Please Input Issue Short Summary!'}]}
-                >
-                  <Input 
-                    placeholder="Short Summary"
-                  />
-                </Form.Item>
-
-                <Form.Item 
-                    name="description"
-                    label="Description"
-                    rules={[{required: true, message: 'Please Input Description!'}]}
-                >
-                    <Editor />
-                </Form.Item>
-
-                <Form.Item
-                    name="reporter"
-                    label="Reporter"
-                    rules={[{required: true, message: 'Please Select Reporter!'}]}
-                >
-                    <Select 
-                        showSearch
-                        placeholder="Reporter"
-                        options={users}
-                    />
-                </Form.Item>
-
-                <Form.Item
-                    name="assignees"
-                    label="Assignees"
-                    rules={[{required: true, message: 'Please Select Assignees!'}]}
-                >
-                    <Select 
-                        showSearch
-                        placeholder="Assignees"
-                        options={users}
-                    />
-                </Form.Item>
-
-                <Form.Item
-                    name="priority"
-                    label="Priority"
-                    rules={[{required: true, message: 'Please Select Priority!'}]}
-                >
-                    <Select
-                        showSearch
-                        placeholder="Priority"
-                    >
-                        {
-                            priority.map((item) => {
-                                return (
-                                    <Select.Option value={item.value}>
-                                        {item.icon}
-                                        {' '}
-                                        {item.label}
-                                    </Select.Option>
-                                )
-                            })
-                        }
-                    </Select>
-                </Form.Item>
-            </Form>   
+            <IssueModalForm 
+                form={form}
+                onFinish={handleCreateIssue}
+            />
         </Modal>
     )
 };

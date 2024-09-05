@@ -20,15 +20,29 @@ import './App.css';
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [columns, setColumns] = useState(taskStatusModel); //todo
-  const [issuesLoading, setIssueLoading] = useState(false); //todo
-
+  const [users, setUsers] = useState([]); //todo Next Redux
+  const [columns, setColumns] = useState(taskStatusModel); //todo Next Redux
+  const [issuesLoading, setIssueLoading] = useState(false); //todo Next Redux
   const [userProfileInfo, setUserProfileInfo] = useState({
     firstName: '',
     lastName: '',
     headline: '',
     email: ''
   });
+
+  useEffect(() => {
+        const handleGetUsersData = async () => {
+            const queryData = await getDocs(collection(db, 'registerUsers'));
+            const result = queryData.docs.map((doc) => {
+                const { firstName, lastName } = doc.data();
+                return {label: `${firstName} ${lastName}`, value: doc.id}
+            });
+
+            setUsers(result);
+        }
+    
+        handleGetUsersData();
+    }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -70,7 +84,16 @@ const App = () => {
 
   return (
     <LoadingWrapper loading={loading} fullScreen>
-      <AuthContextProvider value={{ isAuth, userProfileInfo, setIsAuth, columns, setColumns, handleGetIssues, issuesLoading }}>
+      <AuthContextProvider value={{ 
+        isAuth, 
+        userProfileInfo, 
+        setIsAuth, 
+        columns, 
+        setColumns, 
+        handleGetIssues, 
+        issuesLoading,
+        users
+      }}>
         <RouterProvider router={
           createBrowserRouter(
             createRoutesFromElements(
