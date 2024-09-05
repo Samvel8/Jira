@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Modal,Form, Input, Select, notification, Typography, Space } from 'antd';
+import { Modal,Form, notification, Typography, Space } from 'antd';
 import { ISSUE_OPTION } from '../../../../core/constants/issue';
 import { updateDoc, doc, db } from '../../../../services/firebase/firebase';
 import IssueModalForm from '../IssueModalForm';
@@ -24,6 +24,7 @@ const EditIssueModal = ({ visible, onClose, issueData }) => {
         const docRef = doc(db, 'issue', issueData.key);
         await updateDoc(docRef, values);
         handleClose();
+        handleGetIssues();
         notification.success({
             message: 'Your task has been updated'
         });
@@ -66,7 +67,6 @@ const EditIssueModal = ({ visible, onClose, issueData }) => {
             <IssueModalForm 
                 form={form}
                 onFinish={handleEditForm}
-                users={[]}
             />
 
         </Modal>
