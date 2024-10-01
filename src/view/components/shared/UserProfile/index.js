@@ -6,8 +6,6 @@ import { getFirstLetters } from '../../../../core/helpers/getFirstLetters';
 
 const { Text } = Typography;
 
-
-
 const UserProfile = ({ userProfileInfo, setIsAuth }) => {
     const { firstName, lastName, headline, email } = userProfileInfo;
 
@@ -16,7 +14,7 @@ const UserProfile = ({ userProfileInfo, setIsAuth }) => {
             await signOut(auth);
             setIsAuth(false);
         } catch(e) {
-            console.log(e, 'error');
+            console.log(e, 'error')
         }
     }
 

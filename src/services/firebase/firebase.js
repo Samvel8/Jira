@@ -24,16 +24,16 @@ const db = getFirestore(app);
 
 
 export {
-    app,
-    auth, 
+    app, 
+    auth,
     db, 
+    updateDoc, 
     getDocs, 
     getDoc, 
     collection, 
     getFirestore, 
     setDoc, 
     doc, 
-    onAuthStateChanged, 
-    updateDoc,
-    arrayUnion
+    arrayUnion,
+    onAuthStateChanged
 }

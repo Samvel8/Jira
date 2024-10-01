@@ -1,12 +1,12 @@
 import { useContext } from 'react';
-import { Form, Select, Input, } from 'antd';
+import { Form, Select, Input } from 'antd';
 import Editor from '../Editor';
 import { issueTypes, priority } from '../../../../core/constants/issue';
 import { AuthContext } from '../../../../context/AuthContext';
 
-const IssueModalForm = ({ form, onFinish = [] }) => {
+const IssueModalForm = ({ form, onFinish }) => {
     const { users } = useContext(AuthContext);
-    
+
     return (
         <Form layout="vertical" form={form} onFinish={onFinish}>
                 <Form.Item
@@ -97,7 +97,7 @@ const IssueModalForm = ({ form, onFinish = [] }) => {
                     </Select>
 
                 </Form.Item>
-            </Form>
+            </Form>   
     )
 };
 

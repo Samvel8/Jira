@@ -7,11 +7,11 @@ export const taskStatusModel = () => ({
     },
     [taskStatus.IN_PROGRESS.key]: {
         name: taskStatus.IN_PROGRESS.title,
-        items:[]
+        items: [],
     },
     [taskStatus.TEST.key]: {
         name: taskStatus.TEST.title,
-        items: []
+        items: [],
     },
     [taskStatus.DONE.key]: {
         name: taskStatus.DONE.title,

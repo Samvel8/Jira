@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import { Modal,Form, notification, Typography, Space } from 'antd';
+import { useEffect, useState, useContext } from 'react';
+import { Modal, Form, notification, Typography, Space } from 'antd';
 import { ISSUE_OPTION } from '../../../../core/constants/issue';
 import { updateDoc, doc, db } from '../../../../services/firebase/firebase';
 import IssueModalForm from '../IssueModalForm';
@@ -8,34 +8,37 @@ import { AuthContext } from '../../../../context/AuthContext';
 const { Text } = Typography;
 
 const EditIssueModal = ({ visible, onClose, issueData }) => {
-    const [ form ] = Form.useForm();
+    const [ form ] = Form.useForm(); 
     const { handleGetIssues } = useContext(AuthContext);
     const [confirmLoading, setConfirmLoading] = useState(false);
+
     const handleClose = () => {
-        onClose()
+        onClose();
     };
 
+
     useEffect(() => {
-        const { key, index, ...restData } = issueData;
+        const { key, ...restData } = issueData;
         form.setFieldsValue(restData);
-    }, [issueData, form])
+    }, [issueData, form]);
 
     const handleEditForm = async values => {
-        const docRef = doc(db, 'issue', issueData.key);
+        setConfirmLoading(true);
+        const docRef = doc(db, 'issue', issueData.key); 
         await updateDoc(docRef, values);
         handleClose();
         handleGetIssues();
         notification.success({
-            message: 'Your task has been updated'
+            message: 'Your task has been updated',
         });
         try {
 
         }catch(error) {
-            console.error(error)
-        }finally{
-            setConfirmLoading(false)
+            console.log(error)
+        } finally{
+            setConfirmLoading(false);
         }
-    };
+    }
 
     return (
         <Modal
@@ -47,6 +50,7 @@ const EditIssueModal = ({ visible, onClose, issueData }) => {
                         {'-'}
                         {issueData.key}
                     </Text>
+                    
                 </Space>
             }
             okText="Edit issue"
@@ -60,7 +64,7 @@ const EditIssueModal = ({ visible, onClose, issueData }) => {
                 body: {
                     maxHeight: '600px',
                     overflowY: 'auto',
-                    overflowX: 'hidden',
+                    overflowX: 'hidden'
                 }
             }}
         >
@@ -68,7 +72,6 @@ const EditIssueModal = ({ visible, onClose, issueData }) => {
                 form={form}
                 onFinish={handleEditForm}
             />
-
         </Modal>
     )
 };
