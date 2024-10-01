@@ -1,10 +1,10 @@
-import { 
+import {
+    BugOutlined, 
+    FlagOutlined, 
     ArrowUpOutlined, 
     ArrowDownOutlined, 
-    CheckOutlined, 
-    BugOutlined, 
-    FlagOutlined 
-} from "@ant-design/icons";
+    CheckSquareOutlined,
+} from '@ant-design/icons';
 
 const ISSUE_OPTION = {
     bug: {
@@ -12,12 +12,12 @@ const ISSUE_OPTION = {
         label: 'Bug'
     },
     task: {
-        icon: <CheckOutlined style={{color: '#4fade6'}}/>,
+        icon: <CheckSquareOutlined style={{color: '#4fade6'}}/>,
         label: 'Task'
     },
     story: {
         icon: <FlagOutlined style={{color: '#65ba43'}}/>,
-        label: 'Story'
+        label: 'story'
     }
 }
 
@@ -39,12 +39,13 @@ const issueTypes = [
     },
 ];
 
+
 const PRIORITY_OPTION = {
     high: {
-        icon: <ArrowUpOutlined style={{color: 'red'}}/>
+        icon: <ArrowUpOutlined style={{color: 'red'}} />
     },
     highest: {
-        icon: <ArrowUpOutlined style={{color: 'red'}}/>
+        icon: <ArrowUpOutlined style={{color: 'red'}} />
     },
     medium: {
         icon: <ArrowUpOutlined style={{color: 'orange'}}/>
@@ -85,16 +86,14 @@ const priority = [
     }
 ];
 
-
 const taskStatus = { 
     TODO: {
         key: '0',
         title: 'Todo'
     },
-    IN_PROGRESS:{
-        key:  '1',
+    IN_PROGRESS: {
+        key: '1',
         title: 'In Progress'
-
     },
     TEST: {
         key: '2',
@@ -103,10 +102,9 @@ const taskStatus = {
     DONE: {
         key: '3',
         title: 'Done'
-    }
+    },
 }
 
 export {
     issueTypes, priority, taskStatus, ISSUE_OPTION, PRIORITY_OPTION
 }
-

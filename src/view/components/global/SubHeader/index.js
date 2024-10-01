@@ -1,4 +1,4 @@
-import { useContext, useState, } from 'react';
+import { useState, useContext } from 'react';
 import { Input, Avatar, Button, Divider } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import CreateIssueModal from '../../shared/CreateIssueModal';
@@ -6,12 +6,11 @@ import { getFirstLetters } from '../../../../core/helpers/getFirstLetters';
 import { AuthContext } from '../../../../context/AuthContext';
 import './index.css';
 
-
 const SubHeader = () => {
     const { users } = useContext(AuthContext);
 
     const [modalVisible, setModalVisible] = useState(false);
-    
+
     const handleOpenModal = () => {
         setModalVisible(true);
     }

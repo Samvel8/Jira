@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { Modal, Form, notification } from 'antd';
 import { taskStatus } from '../../../../core/constants/issue';
-import { doc, setDoc, db, updateDoc, arrayUnion} from '../../../../services/firebase/firebase';
+import { doc, setDoc, db, updateDoc, arrayUnion } from '../../../../services/firebase/firebase';
 import { AuthContext } from '../../../../context/AuthContext';
 import IssueModalForm from '../IssueModalForm';
 

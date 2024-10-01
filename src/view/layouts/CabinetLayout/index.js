@@ -4,7 +4,6 @@ import { Outlet } from 'react-router-dom';
 import './index.css';
 
 const CabinetLayout = () => {
-
   return (
     <div className="cabinet_layout_container">
         <Sidebar />
