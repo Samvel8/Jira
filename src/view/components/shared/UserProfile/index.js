@@ -3,12 +3,14 @@ import { UserOutlined } from '@ant-design/icons';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../../../services/firebase/firebase';
 import { getFirstLetters } from '../../../../core/helpers/getFirstLetters';
+import { ROUTES_CONSTANTS } from '../../../../routes/';
+import { useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;
 
 const UserProfile = ({ userProfileInfo, setIsAuth }) => {
     const { firstName, lastName, headline, email } = userProfileInfo;
-
+    const navigate = useNavigate();
     const handleLogout = async () => {
         try {
             await signOut(auth);
@@ -45,6 +47,15 @@ const UserProfile = ({ userProfileInfo, setIsAuth }) => {
             )
         },
         {
+          onClick: () => navigate(ROUTES_CONSTANTS.CABINET),
+          key: 'cabinet',
+          label: (
+            <Text>
+              Cabinet
+            </Text>
+          )
+        },
+        {
             onClick: handleLogout,
             key: 'logout',
             label: (
@@ -52,7 +63,7 @@ const UserProfile = ({ userProfileInfo, setIsAuth }) => {
                     Logout
                 </Text>
             )
-        }
+        },
     ]
 
     return (

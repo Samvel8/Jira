@@ -1,11 +1,10 @@
-import { useContext } from 'react';
 import { Form, Select, Input } from 'antd';
 import Editor from '../Editor';
 import { issueTypes, priority } from '../../../../core/constants/issue';
-import { AuthContext } from '../../../../context/AuthContext';
+import { useSelector } from 'react-redux';
 
 const IssueModalForm = ({ form, onFinish }) => {
-    const { users } = useContext(AuthContext);
+  const { users } = useSelector((state) => state.users);
 
     return (
         <Form layout="vertical" form={form} onFinish={onFinish}>

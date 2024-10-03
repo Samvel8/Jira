@@ -1,12 +1,11 @@
-import { useState } from 'react';
-
-import { Button, Menu } from 'antd';
+import { Menu } from 'antd';
 import { DatabaseOutlined, SettingOutlined, TeamOutlined } from '@ant-design/icons'
+import './index.css';
 
 const items = [
     {
       key: 'board',
-      label: 'Kabinet Board',
+      label: 'Cabinet Board',
       icon: <DatabaseOutlined />
     },
     {
@@ -22,23 +21,13 @@ const items = [
 ];
 
 const Sidebar = () => {
-    const [collapsed, setCollapsed] = useState(true); 
-    
-    const handleChangeCollapsed = () => {
-        setCollapsed(!collapsed);
-    }
 
     return (
         <div className="sidebar">
-            <Button onClick={handleChangeCollapsed}>
-                {
-                    collapsed ? 'open' : 'close'
-                }
-            </Button>
-            <Menu 
+            <Menu
+                className="project_sidebar"
                 items={items}
                 mode="inline"
-                inlineCollapsed={collapsed}
             />
         </div>
     )
