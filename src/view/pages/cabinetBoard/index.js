@@ -1,64 +1,28 @@
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { db, updateDoc, doc } from '../../../services/firebase/firebase';
 import LoadingWrapper from '../../components/shared/LoadingWrapper';
 import { Typography, Flex } from 'antd';
-import { AuthContext } from '../../../context/AuthContext';
 import EditIssueModal from '../../components/shared/EditIssueModal';
 import { ISSUE_OPTION, PRIORITY_OPTION } from '../../../core/constants/issue';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchData } from '../../../state-managment/reducers/issuesSlice';
+import { fetchIssuesData, changeIssueColumns } from '../../../state-managment/reducers/issuesSlice';
 import './index.css';
 
 const { Title, Text } = Typography;
 
-
 const CabinetBoard = () => {
-    const { issuesLoading, setColumns } = useContext(AuthContext)
     const [ selectedIssueData, setSelectedIssueData ] = useState(null);
     const dispatch = useDispatch();
 
-    const columns = useSelector(state => state.issues.issueColumns);
+    const { issueColumns, loading } = useSelector(state => state.issues);
 
     useEffect(() => {
-        dispatch(fetchData());
-    },[])
+        dispatch(fetchIssuesData());
+    },[]);
+
     const handleDragEnd = result => {
-        const { source, destination } = result;
-        const sourceColumn = columns[source.droppableId];
-        const destColumn = columns[destination.droppableId];
-
-        const sourceItems = [...sourceColumn.items];
-        const destItems = [...destColumn.items]; 
-
-        const [removed] = sourceItems.splice(source.index, 1);
-        destItems.splice(destination.index, 0, removed);
-
-        if (source.droppableId !== destination.droppableId) {
-            setColumns({
-                ...columns,
-                [source.droppableId]: {
-                    ...sourceColumn,
-                    items: sourceItems
-                },
-                [destination.droppableId]: {
-                    ...destColumn,
-                    items: destItems
-                }
-            })
-        } else {
-            const sourceColumn = columns[source.droppableId];
-            const sourceColumnItems = sourceColumn.items;
-            const [removed] = sourceColumnItems.splice(source.index, 1);
-            sourceColumnItems.splice(destination.index, 0, removed);
-            setColumns({
-                ...columns,
-                [source.droppableId]: {
-                    ...sourceColumn,
-                    items: sourceColumnItems
-                }
-            })
-        }
+        dispatch(changeIssueColumns(result));
     };                      
 
     const handleChangeTaskStatus = async result => { 
@@ -80,10 +44,10 @@ const CabinetBoard = () => {
 
     return (
         <div className="drag_context_container">
-        <LoadingWrapper loading={issuesLoading}>
+        <LoadingWrapper loading={loading}>
                 <DragDropContext onDragEnd={handleChangeTaskStatus}>
                     {
-                        Object.entries(columns).map(([columnId, column]) => {
+                        Object.entries(issueColumns).map(([columnId, column]) => {
                             return (
                                 <div className="column_container" key={columnId}>
                                 <div className="column_header">
